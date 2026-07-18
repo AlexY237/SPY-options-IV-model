@@ -8,7 +8,7 @@ Built as a self-directed project to develop quantitative and data-analysis skill
 
 ## Sample output
 
-![Volatility smirk example](volatility_smirk_example.png)
+![Volatility smirk example](volatility_smirk_example-2.png)
 
 *Example render — the market-status annotation, spot price, and curve shape will differ each time the notebook is run, since the data is pulled live rather than from a fixed dataset.*
 
