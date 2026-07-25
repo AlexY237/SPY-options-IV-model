@@ -1,8 +1,6 @@
 # SPY Options Pricing & Implied Volatility Smirk Model
 
-A python tool which prices SPY options using the Black-Scholes model. Using this it calculates impplied violatilty using live data
-
-A Python tool that prices SPY options with the Black-Scholes model, backs out implied volatility from live market quotes, and plots the resulting volatility smirk against historical volatility.
+A python tool which prices SPY options using the Black-Scholes model. Using this it calculates implied violatilty using live data and plots the volatiltiy smirk against historical volatiltiy.
 
 ## Overview
 
