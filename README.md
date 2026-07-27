@@ -46,8 +46,8 @@ These are the assumptions that the Black-Scholes Model uses:
 - The short term interest is known and is constant through time
 - The stock follows a 'random walk' in continuous time with a variance rate proportional to the square of the stock price. So the distribution of possible stock prices at the end of any finite interval is log-normal and the variance rate of the return on the stock is constant.
 - The stock pays no dividends or other distributions
-- The option is "European" and can only be excercised at maturity.
-- There are no transaction cost when buying or selling the stock or the option
+- The option is "European" and can only be exercised at maturity.
+- There are no transaction costs when buying or selling the stock or the option
 - It is possible to borrow any fraction of the price of a security to buy it or to hold it, at the short-term interest rate
 - There are no penalties to short selling. A seller who does not own a security will simply accept the price of the security from a buyer, and will agree to settle with the buyer on some future date by paying him an amount equal to the price of the security on that date.
 
@@ -61,19 +61,19 @@ I use a fixed r = 0.05 instead of pulling a live risk-free rate from Treasury yi
 
 - **No dividend adjustment and "American style" stock**
 
-I didn't include a dividend yield term, creating the assumption that SPY pays no dividends, even though it actually does. This is the most impactful simplification, as it skews the implied volatilities I solve for. I also price these as European-style, despite SPY options being American-style option. For calls this would not affect the result much, except that early exercise can become optimal just before an ex-dividend date. For puts the result may differ, as the incentive to exercise early comes from capturing interest on the strike price rather than from dividends.This incentive is present more persistently rather than spiking around a specific date. So the put side of my combined implied volatility curve will likely carry more approximation error than the call side.
+I didn't include a dividend yield term, creating the assumption that SPY pays no dividends, even though it actually does. This is the most impactful simplification, as it skews the implied volatilities I solve for. I also price these as European-style, despite SPY options being American-style options. For calls this would not affect the result much, except that early exercise can become optimal just before an ex-dividend date. For puts the result may differ, as the incentive to exercise early comes from capturing interest on the strike price rather than from dividends. This incentive is present more persistently rather than spiking around a specific date. So the put side of my combined implied volatility curve will likely carry more approximation error than the call side.
 
 - **OTM filtering for implied volatility**
 
-When solving for implied volatility, I only used Out-Of-The-Money options, combining OTM puts and OTM calls into a single continuous series. I made this choice because deep In-The-Money options have near-zero Vega so the Implied Volatility solver would not be able to find a unique value for the corresponding strike price. As well as this the moneyness cutoff sits exactly at the spot price, rather than using a wider band around it.
+When solving for implied volatility, I only used Out-Of-The-Money options, combining OTM puts and OTM calls into a single continuous series. I made this choice because deep In-The-Money options have near-zero Vega so the Implied Volatility solver would not be able to find a unique value for the corresponding strike price. As well as this, the moneyness cutoff sits exactly at the spot price, rather than using a wider band around it.
 
 - **Data and price inputs**
 
-I use a single spot price snapshot, which is taken as the most recent close from either a 2-day or 5-day price history depending on whether markets are open, this is not synchronised to the exact timestamp of each option quote, because of this there is a small timing inaccuracy between S and the bid/ask I compare it against. I also use the mid-price = (bid + ask) / 2, as a substitute for the market price, which assumes the midpoint fairly represents value even though spread width varies across strikes. For liquidity, I only filter on a nonzero ask price and nonzero open interest. I did not filter on trading volume or spread width so some options passing this filter may still be thinly traded.
+I use a single spot price snapshot, taken as the most recent close from either a 2-day or 5-day price history depending on whether markets are open, this is not synchronised to the exact timestamp of each option quote, so there is a small timing inaccuracy between S and the bid/ask I compare it against. I also use the mid-price = (bid + ask) / 2, as a substitute for the market price, which assumes the midpoint fairly represents value even though spread width varies across strikes. For liquidity, I only filter on a nonzero ask price and nonzero open interest; I did not filter on trading volume or spread width so some options passing this filter may still be thinly traded.
 
 - **Implied volatility solver bounds**
 
-I bound Brent's method to search for a solution between 0% and 500% volatility. Any option whose true implied volatility falls outside this range fails and is recorded as NaN, then discarded from the analysis.
+I bound Brent's method to search for a solution between 0% and 500% volatility. Any option whose true implied volatility falls outside this range fails to converge and is recorded as NaN, then discarded from the analysis.
 
 ## Tech stack
 
