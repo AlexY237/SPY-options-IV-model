@@ -67,6 +67,13 @@ I didn't include a dividend yield term, creating the assumption that SPY pays no
 
 When solving for implied volatility, I only used Out-Of-The-Money options, combining OTM puts and OTM calls into a single continuous series. I made this choice because deep In-The-Money options have near-zero Vega so the Implied Volatility solver would not be able to find a unique value for the corresponding strike price. As well as this the moneyness cutoff sits exactly at the spot price, rather than using a wider band around it.
 
+- **Data and price inputs**
+
+I use a single spot price snapshot, which is taken as the most recent close from either a 2-day or 5-day price history depending on whether markets are open, this is not synchronised to the exact timestamp of each option quote, because of this there is a small timing inaccuracy between S and the bid/ask I compare it against. I also use the mid-price = (bid + ask) / 2, as a substitute for the market price, which assumes the midpoint fairly represents value even though spread width varies across strikes. For liquidity, I only filter on a nonzero ask price and nonzero open interest. I did not filter on trading volume or spread width so some options passing this filter may still be thinly traded.
+
+- **Implied volatility solver bounds**
+
+I bound Brent's method to search for a solution between 0% and 500% volatility. Any option whose true implied volatility falls outside this range fails and is recorded as NaN, then discarded from the analysis.
 
 ## Tech stack
 
