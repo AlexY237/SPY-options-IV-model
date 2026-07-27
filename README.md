@@ -39,9 +39,28 @@ Built iteratively over several weeks; the debugging process surfaced a handful o
 
 **Pre-market spot mispricing.** Using the last traded price outside market hours could misrepresent the true current spot. Added explicit market-hours detection to choose between the live intraday price and last close.
 
+## Black-Scholes Model Assumptions
+
+These are the assumptions that the Black-Scholes Model uses:
+
+- The short term interest is known and is constant through time
+- The stock follows a 'random walk' in continuous time with a variance rate proportional to the square of the stock price. So the distribution of possible stock prices at the end of any finite interval is log-normal and the variance rate of the return on the stock is constant.
+- The stock pays no dividends or other distributions
+- The option is "European" and can only be excercised at maturity.
+- There are no transaction cost when buying or selling the stock or the option
+- It is possible to borrow any fraction of the price of a security to buy it or to hold it, at the short-term interest rate
+- There are no penalties to short selling. A seller who does not own a security will simply accept the price of the security from a buyer, and will agree to settle with the buyer on some future date by paying him an amount equal to the price of the security on that date.
+
 ## Modeling assumptions & limitations
 
-SPY options are American-style (early exercise permitted), while Black-Scholes assumes European-style exercise (exercise only at expiry). This is a standard simplifying approximation in practice — the early-exercise premium is typically small for underlyings with low dividend yields, and is commonly ignored in introductory and applied options-pricing work. A strictly European-style equivalent would require pricing an index option (e.g. SPX) instead, which isn't available through yfinance's options-chain endpoint.
+Beyond the Black-Scholes assumptions I made the following choices when building this model
+
+- I use a fixed r = 0.05 instead of pulling a live risk-free rate from Treasury yields or SOFR. I did this as the true risk-free rate fluctuates and because r appears in the discounting term of the pricing formula. However using a stale or approximate rate introduces a small bias into the implied volatility I later solve for. I also fix T = 30/365 for every option in the chain, so that each contract does not have different times remaining until they expire, and I select the expiry date closest to 30 days out so T is an approximation of the time to expiry for the contract I'm using. For the initial Black-Scholes pricing, I use a single 30-day trailing historical volatility, applied across every strike. This treats historical volatility as a replacement for the market implied volatility, which I use as an assumption for the rest of the notebook until implied volatility is calculated.
+ - I used SPY options (an American style option), while Black-Scholes assumes European style options. I thought this was acceptable for calls in particular, where early exercise is rarely optimal in the absence of dividends.
+ -
+  I didn't include a dividend yield term, creating the assumption that SPY pays no dividends, even though it actually does. This is the most impactful simplification, as it skews the implied volatilities I solve for. I also price these as European-style, despite SPY options being American-style option. 
+  
+  For calls this is reasonably safe on a dividend-paying stock only up to a point, since early exercise can become optimal just before an ex-dividend date. For puts the gap is more persistent regardless of dividends, so the put side of my combined implied vol curve likely carries slightly more approximation error than the call side.
 
 ## Tech stack
 
