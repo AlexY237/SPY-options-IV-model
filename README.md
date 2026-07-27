@@ -55,13 +55,13 @@ These are the assumptions that the Black-Scholes Model uses:
 
 Beyond the Black-Scholes assumptions I made the following choices when building this model
 
-- Volatility input, Risk-free rate and time to expiry
+- Volatility input, Risk-free rate and time to expiry -
 I use a fixed r = 0.05 instead of pulling a live risk-free rate from Treasury yields or SOFR. I did this as the true risk-free rate fluctuates and because r appears in the discounting term of the pricing formula. However using a stale or approximate rate introduces a small bias into the implied volatility I later solve for. I also fix T = 30/365 for every option in the chain, so that each contract does not have different times remaining until they expire, and I select the expiry date closest to 30 days out so T is an approximation of the time to expiry for the contract I'm using. For the initial Black-Scholes pricing, I use a single 30-day trailing historical volatility, applied across every strike. This treats historical volatility as a replacement for the market implied volatility, which I use as an assumption for the rest of the notebook until implied volatility is calculated.
 
-- No dividend adjustment and "American style" stock
+- No dividend adjustment and "American style" stock -
 I didn't include a dividend yield term, creating the assumption that SPY pays no dividends, even though it actually does. This is the most impactful simplification, as it skews the implied volatilities I solve for. I also price these as European-style, despite SPY options being American-style option. For calls this would not affect the result much, except that early exercise can become optimal just before an ex-dividend date. For puts the result may differ, as the incentive to exercise early comes from capturing interest on the strike price rather than from dividends.This incentive is present more persistently rather than spiking around a specific date. So the put side of my combined implied volatility curve will likely carry more approximation error than the call side.
 
-- OTM filtering for implied volatility
+- OTM filtering for implied volatility -
 When solving for implied volatility, I only used Out-Of-The-Money options, combining OTM puts and OTM calls into a single continuous series. I made this choice because deep In-The-Money options have near-zero Vega so the Implied Volatility solver would not be able to find a unique value for the corresponding strike price. As well as this the moneyness cutoff sits exactly at the spot price, rather than using a wider band around it.
 
 
