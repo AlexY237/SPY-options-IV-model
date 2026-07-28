@@ -87,10 +87,34 @@ Built iteratively over several weeks, the process surfaced a handful of genuine 
 
 ## Running it
 
+## Running the Project
+
+1. Clone the repository
+
 ```bash
-pip install numpy pandas scipy matplotlib yfinance pytz
+git clone https://github.com/AlexY237/SPY-options-IV-model.git
+cd SPY-options-IV-model
 ```
 
+2. Install the required packages
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Launch Jupyter Notebook
+
+```bash
+jupyter notebook
+```
+
+or
+
+```bash
+jupyter lab
+```
+
+4. Open `SPY_options_IV_model.ipynb` (replace with your notebook's actual name) and run the cells from top to bottom.
 Then run all cells top to bottom in Jupyter. The options chain and spot price are pulled live, so results reflect whatever SPY options are trading at runtime.
 
 ## Possible extensions
