@@ -76,6 +76,24 @@ Built iteratively over several weeks, the process surfaced a handful of genuine 
 
 **Pre-market spot mispricing.** Using the last traded price outside market hours could misrepresent the true current spot. Added explicit market-hours detection to choose between the live intraday price and last close.
 
+## Possible extensions
+
+**Modeling**  
+- Calibrate a SABR model to the implied volatility smirk, producing a smooth curve that captures market-implied volatility across strike prices.
+- Extend the model from a 2D IV smirk to a full 3D implied volatility surface across both strike price and expiry.
+- Add a local volatility surface, this lets volatility depend on both the current stock price and time rather than have one IV for all options.
+
+**Comparison**  
+- Compare Black-Scholes implied volatility with other models such as binomial trees or stochastic volatility models. Compare how different models value the same option and what implied volatilities they produce.
+- Swap in SPX for a genuinely European-style comparison point (would need a data source beyond yfinance, e.g. CBOE DataShop). 
+
+**Data**  
+- Compute the greeks (Delta, Gamma, Vega, Theta and Rho) for each option as well as implied volatility.
+- Pull a live risk-free rate (e.g. 3-month T-bill yield) instead of the current hardcoded 5%.
+
+**UI**  
+- Build an interactive dashboard that allows users to select expires and visualise implied volatility.
+
 ## Tech stack
 
 - Python, Jupyter
@@ -116,21 +134,3 @@ jupyter lab
 
 4. Open `Black_Scholes_Model.ipynb`
 Then run all cells top to bottom in Jupyter. The options chain and spot price are pulled live, so results reflect whatever SPY options are trading at runtime.
-
-## Possible extensions
-
-**Modeling**  
-- Calibrate a SABR model to the implied volatility smirk, producing a smooth curve that captures market-implied volatility across strike prices.
-- Extend the model from a 2D IV smirk to a full 3D implied volatility surface across both strike price and expiry.
-- Add a local volatility surface, this lets volatility depend on both the current stock price and time rather than have one IV for all options.
-
-**Comparison**  
-- Compare Black-Scholes implied volatility with other models such as binomial trees or stochastic volatility models. Compare how different models value the same option and what implied volatilities they produce.
-- Swap in SPX for a genuinely European-style comparison point (would need a data source beyond yfinance, e.g. CBOE DataShop). 
-
-**Data**  
-- Compute the greeks (Delta, Gamma, Vega, Theta and Rho) for each option as well as implied volatility.
-- Pull a live risk-free rate (e.g. 3-month T-bill yield) instead of the current hardcoded 5%.
-
-**UI**  
-- Build an interactive dashboard that allows users to select expires and visualise implied volatility.
