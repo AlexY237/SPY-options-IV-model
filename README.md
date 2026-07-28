@@ -4,7 +4,7 @@ A python tool which prices SPY options using the Black-Scholes model. Using this
 
 ## Overview
 
-Built as a self-directed project to develop quantitative and data-analysis skills relevant to finance/quant roles — an end-to-end options-pricing pipeline running against live market data, from data ingestion through to a rendered volatility curve.
+Built as a self-directed project to develop quantitative and data-analysis skills relevant to finance/quant roles. An end-to-end options-pricing pipeline running against live market data, from data sampling through to a full volatility curve.
 
 ## Sample output
 
