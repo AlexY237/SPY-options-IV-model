@@ -114,7 +114,7 @@ or
 jupyter lab
 ```
 
-4. Open `SPY_options_IV_model.ipynb` (replace with your notebook's actual name) and run the cells from top to bottom.
+4. Open `Black_Scholes_Model.ipynb`
 Then run all cells top to bottom in Jupyter. The options chain and spot price are pulled live, so results reflect whatever SPY options are trading at runtime.
 
 ## Possible extensions
