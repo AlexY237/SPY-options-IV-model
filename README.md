@@ -33,7 +33,7 @@ Built iteratively over several weeks; the debugging process surfaced a handful o
 
 **Flat / stale IV readings.** Some contracts returned constant or clearly wrong implied vols, traced to stale quotes. Fixed with liquidity gates — `ask > 0` and `openInterest > 0` — applied before solving.
 
-**Staircase artefacts in the curve.** Including deep in-the-money contracts produced jagged, non-smooth jumps in implied vol — deep-ITM options have near-zero vega, so small price noise turns into large, meaningless swings in the solved-for volatility. Fixed by restricting to OTM only (`strike >= spot` for calls, `strike <= spot` for puts).
+**Staircase artefacts in the curve.** Including deep in-the-money contracts produced jagged, non-smooth jumps in implied vol as deep-ITM options have near-zero vega, so small price noise turns into large, meaningless swings in the solved-for volatility. Fixed by restricting to OTM only (`strike >= spot` for calls, `strike <= spot` for puts).
 
 **Solver convergence failures.** Brent's method occasionally fails to converge, typically near-zero vega or at the edges of the strike range. Wrapped in a try/except returning `NaN`, then dropped before plotting, rather than letting one bad contract crash the pipeline.
 
